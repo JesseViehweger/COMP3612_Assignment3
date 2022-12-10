@@ -28,78 +28,114 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/paintings', (req, resp) => { resp.json(paintings) });
+app.get('/api/paintings', (req, resp) => { 
+    if (paintings.length == 0) {
+        paintings = "There was no data found.";
+    }
+    resp.json(paintings) });
 
 app.get('/api/painting/:id', (req, resp) => {
     const id = req.params.id;
-    const matches =
+    let matches =
         paintings.filter(obj => id == obj.paintingID);
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
 app.get('/api/painting/gallery/:id', (req, resp) => {
     const id = req.params.id;
-    const matches =
+    let matches =
         paintings.filter(obj => id == obj.gallery.galleryID);
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
 app.get('/api/painting/artist/:id', (req, resp) => {
     const id = req.params.id;
-    const matches =
+    let matches =
         paintings.filter(obj => id == obj.artist.artistID);
+
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
 app.get('/api/painting/year/:min/:max', (req, resp) => {
     const min = req.params.min;
     const max = req.params.max;
-    const matches =
+    let matches =
         paintings.filter(obj => max >= obj.yearOfWork && min <= obj.yearOfWork);
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
 app.get('/api/painting/title/:text', (req, resp) => {
     const text = req.params.text.toUpperCase();
-    const matches =
+    let matches =
         paintings.filter(obj => obj.title.toUpperCase().includes(text) == 1);
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
 app.get('/api/painting/color/:name', (req, resp) => {
     const find = req.params.name.toUpperCase();
-    const matches =
-        paintings.filter(obj => 
-            {   
-                for (color of obj.details.annotation.dominantColors){  
-                    if(color.name.toUpperCase() == find){
-                        console.log(color.name)    
-                        return true;
-                    }
+    let matches =
+        paintings.filter(obj => {
+            for (color of obj.details.annotation.dominantColors) {
+                if (color.name.toUpperCase() == find) {
+                    console.log(color.name)
+                    return true;
                 }
-            });           
+            }
+        });
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
-app.get('/api/artists', (req, resp) => { resp.json(artists) });
+app.get('/api/artists', (req, resp) => { 
+    if (artists.length == 0) {
+        artists = "There was no data found.";
+    }
+    resp.json(artists) });
 
 app.get('/api/artists/:country', (req, resp) => {
     const country = req.params.country.toUpperCase();
-    const matches =
+    let matches =
         artists.filter(obj => country == obj.Nationality.toUpperCase());
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
-app.get('/api/galleries', (req, resp) => { resp.json(galleries) });
+app.get('/api/galleries', (req, resp) => { 
+    if (galleries.length == 0) {
+        galleries = "There was no data found.";
+    }
+    resp.json(galleries) });
 
 app.get('/api/galleries/:country', (req, resp) => {
     const country = req.params.country.toUpperCase();
-    const matches =
+    let matches =
         galleries.filter(obj => country == obj.GalleryCountry.toUpperCase());
+    if (matches.length == 0) {
+        matches = "There was no data found.";
+    }
     resp.json(matches);
 });
 
-let port = 3000;
+let port = 8080;
 app.listen(port, () => {
     console.log("Server running at port= " + port);
 });
